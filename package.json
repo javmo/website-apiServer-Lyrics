@@ -1,0 +1,36 @@
+{
+  "name": "website-apiServer-Lyrics",
+  "version": "1.0.0",
+  "description": "YOUR PROJECT DESCRIPTION GOES HERE",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js --ignore db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javmo/website-apiServer-Lyrics.git"
+  },
+  "keywords": [
+    "Girls",
+    "Who",
+    "Code",
+    "website",
+    "template",
+    "node"
+  ],
+  "author": "YOUR NAME GOES HERE",
+  "bugs": {
+    "url": "https://github.com/javmo/website-apiServer-Lyrics.git/issues"
+  },
+  "homepage": "https://github.com/javmo/website-apiServer-Lyrics.git#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "lowdb": "^1.0.0",
+    "morgan": "^1.10.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
