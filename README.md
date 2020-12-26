@@ -4,21 +4,27 @@
 
 ----
 
-**In your Cloud9 Workspace**: hit *Run* (green play button above) and wait for the web server to start.
-Then go to the link in the light blue box (the "terminal") shown below. It will look something like this:
 
-```
-Your code is running at https://girls-who-code-website-template-amyhua.c9users.io.
-```
-
-Click on the link.
-
-----
 
 **On your Local Computer**: in your terminal, type in the following command after the dollar sign ($):
 
 ```
 $ npm install
+
+$ npm init -y
+```
+
+instalar para el backend
+
+```
+$ npm i express mongoose morgan multer dotenv cross-env cors
+
+$ npm i fs-extra
+```
+
+instalar dependecias frontend
+```
+npm i webpack webpack-cli html-webpack-plugin css-loader style-loader mini-css-extract-plugin webpack-dev-server-timeago.js -D
 ```
 
 and then hit ENTER. This will download a number of files. Wait a while for that to finish. Then, type in the command:
@@ -51,11 +57,29 @@ Using this template, you can
   ```
 
   at the bottom of the `<body>...</body>` in `public/index.html`
+  
+  Instalar mongoDB https://www.mongodb.com/try/download/community?tck=docs_server
 
 ## File Structure
 
 ```
-client/               Folder you will be working out of
+backend/               Folder you will be working out of
+    /controllers
+    /models
+    /public
+    /routes
+----app.js        
+----database.js
+----index.js
+
+frontend/               Folder you will be working out of
+    /models
+    /services
+    /styles
+----app.js        
+----database.js
+----index.js
+
 ----
 ----index.html        Main HTML Page of entire website
 ----                     includes reference to .js & .css files
@@ -73,4 +97,4 @@ package.json          DO NOT TOUCH. Node-js package.json file that
                            recognizes this project as a Node-js app
 ```
 
-Create a webpage on `index.html`
+
