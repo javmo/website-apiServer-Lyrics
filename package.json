@@ -4,14 +4,16 @@
   "description": "YOUR PROJECT DESCRIPTION GOES HERE",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js --ignore db.json"
+    "dev": "cross-env NODE_ENV=development nodemon backend/index.js ",
+    "start": "cross-env NODE_ENV=production node backend/index.js",
+    "build": "cross-env NODE_ENV=production webpack",
+    "server:dev": "webpack serve"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/javmo/website-apiServer-Lyrics.git"
   },
   "keywords": [
-    "Girls",
     "Who",
     "Code",
     "website",
@@ -24,13 +26,28 @@
   },
   "homepage": "https://github.com/javmo/website-apiServer-Lyrics.git#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "form-data-json-convert": "^1.2.2",
     "http": "0.0.0",
     "lowdb": "^1.0.0",
+    "mongoose": "^5.11.8",
     "morgan": "^1.10.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "webpack-dev-middleware": "^4.0.2"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "css-loader": "^5.0.1",
+    "html-webpack-plugin": "^4.5.0",
+    "mini-css-extract-plugin": "^1.3.3",
+    "nodemon": "^1.19.4",
+    "style-loader": "^2.0.0",
+    "timeago.js": "^4.0.2",
+    "webpack": "^5.10.3",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
   }
 }
