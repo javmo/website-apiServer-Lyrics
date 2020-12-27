@@ -48,7 +48,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './frontend/songbook.html',
             filename: 'songbook.html',
-            chunks: ['songBook']
+            chunks: ['songbook']
         }),
         new HtmlWebpackPlugin({
             template: './frontend/categoryabm.html',
