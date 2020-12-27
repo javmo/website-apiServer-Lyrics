@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<head>
+    <meta charset="UTF-8"  name="viewport" content="width=device-width, initial-scale=1.0" >
+    <title>Category ABM</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css">
+    <!-- ANIMATE CSS -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+</head>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Songs</a>
+
+    <div class="collapse navbar-collapse show" id="navbarColor02" style="">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Song</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="/panel.html">Publish Lyrics Panel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/songBook.html">Song Book</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/categoryABM.html">Category ABM
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container p-4" id="app">
+    <div class="row">
+        <div class="col-md-4">
+            <form id="category-form" class="card card-body">
+                <div class="form-group">
+                    <input type="text" id="categoryType" class="form-control" placeholder="Category Type" autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="categoryOrder" class="form-control" placeholder="Category Order  (1 ,2 ,3..) " autofocus>
+                </div>
+                <button type="Submit" class="btn btn-primary">
+                    Save Category
+                </button>
+            </form>
+        </div>
+    <div class="col-md-8" id="category-cards"></div>
+    </div>
+</div>
+
+</body>
+</html>
