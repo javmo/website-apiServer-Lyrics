@@ -1,14 +1,12 @@
 import './styles/style.css';
 import UIPanel from './UIPanel';
 const songService = new SongService();
-import Song from "./models/Song";
-import Lyric from "./models/Lyrics";
+
 import SongService from "./services/SongService";
 import LyricsPublish from "./models/LyricsPublish";
 
 
 
-/*const songs = await songService.getSongs();*/
 
 
 
@@ -16,19 +14,7 @@ import LyricsPublish from "./models/LyricsPublish";
  document.addEventListener('DOMContentLoaded', () => {
     const uiPanel = new UIPanel();
     uiPanel.renderLyricPub();
-/*     songs =  uiPanel.loadSongs();
-     uiPanel.renderGenre();*/
 });
-
-
-/*document.querySelector('.search')
-    .addEventListener('change', e => {
-
-        const uiPanel = new UIPanel();
-        uiPanel.loadSongs();
- //       const songs = UIPanel.loadSongs();
-        uiPanel.displayMatches(e);
-    });*/
 
 document.querySelector("#search-songs")
     .addEventListener('keyup', e => {
@@ -44,10 +30,8 @@ document.getElementById('search-content')
         if (e.target.classList.contains('publish')) {
             console.log('entra puiblish');
             const songId = e.target.getAttribute('_id');
-            console.log(songId);
             const categoryId = document.getElementById('exampleSelect1-' + songId)
                 .selectedOptions[0].value;
-            console.log(categoryId);
 
             const lyricPub = new LyricsPublish(songId,categoryId);
             const uiPanel = new UIPanel();

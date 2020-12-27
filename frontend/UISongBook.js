@@ -2,7 +2,6 @@ import SongService from "./services/SongService";
 import CategoryService from "./services/CategoryService";
 import LyricPublishService from "./services/LyricPublishService";
 const lyricService = new LyricService();
-import UI from "./UI";
 import LyricService from "./services/LyricService";
 
 const songService = new SongService();
@@ -35,7 +34,7 @@ class UISongBook {
             div.className = 'card-header';
             div.id = 'header-category-'+ category._id;
             div.innerHTML = `
-            ${ category.categoryType }
+            ${ category.categoryType } <h2>(ORDEN: ${ category.order })</h2>
             `
             songsBookContainer.appendChild(div);
 
@@ -43,8 +42,6 @@ class UISongBook {
             div2.className = 'card-body';
             div2.id = 'body-category-'+ category._id;
             songsBookContainer.appendChild(div2);
-
-
 
         })
     }
@@ -96,7 +93,6 @@ class UISongBook {
             div2.className = 'card-body';
             div2.id = 'body-category-'+ category._id;
             songsBookContainer.appendChild(div2);
-
 
         })
     }

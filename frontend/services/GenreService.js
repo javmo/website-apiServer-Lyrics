@@ -1,7 +1,7 @@
 class GenreService {
     constructor() {
-        this.URI = 'http://localhost:3000/api/genres';
-       // this.URI = '/api/genres';
+       // this.URI = 'http://localhost:3000/api/genres';
+        this.URI = '/api/genres';
     }
 
     async getGenres() {

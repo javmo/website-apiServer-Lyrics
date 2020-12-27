@@ -1,5 +1,4 @@
 import  SongService from './services/SongService';
-import Lyric from "./models/Lyrics";
 import LyricService from "./services/LyricService";
 import GenreService from "./services/GenreService";
 const songService = new SongService();
@@ -31,7 +30,6 @@ class UI {
             `;
             songsCardContainer.appendChild(div);
         })
-        console.log(songs);
     }
 
     async renderGenre() {

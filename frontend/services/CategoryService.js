@@ -1,7 +1,7 @@
 class CategoryService {
     constructor() {
-        this.URI = 'http://localhost:3000/api/category';
-     //   this.URI = '/api/category';
+     //   this.URI = 'http://localhost:3000/api/category';
+        this.URI = '/api/category';
     }
 
     async getCategories() {
@@ -17,6 +17,38 @@ class CategoryService {
         });
         const category = await response.json();
         return category;
+    }
+
+    async postCategory(category) {
+        const reponse = await fetch(this.URI, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: category
+        });
+        return await reponse.json();
+    }
+
+    async deleteCategory(categoryId) {
+        const response = await fetch(`${this.URI}/${categoryId}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'DELETE'
+        });
+        const data = await response.json();
+    }
+
+    async updateCategory(cateogry) {
+        const response = await fetch(`${this.URI}/${cateogry._id}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(cateogry)
+        });
+        return await response.json();
     }
 
 /*    async postLyricPublish(lyricPub) {

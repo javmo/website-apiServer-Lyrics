@@ -24,10 +24,8 @@ document.getElementById('song-form')
         formData.append('genres','{}')
         formData.append('text', text);
 
-
         const ui = new UI();
         const song = new Song(title, [], new Lyric(text));
-        console.log(song);
 
 
         ui.addANewSong(song.toJson());

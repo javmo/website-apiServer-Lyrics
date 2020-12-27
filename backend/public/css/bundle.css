@@ -1,4 +1,6 @@
 body {
+    width: auto;
+    height: auto;
 
 }
 .card.text-white.bg-secondary.mb-3{
@@ -32,6 +34,15 @@ p {
     height: auto;
 
 }
+.btn.btn-success.publish {
+    margin-left: 80px;
+    margin-top: 00px;
+    width: auto;
+    height: auto;
+
+}
+
+
 .btn.btn-primary.btn-lg.btn-block{
     margin-left: 340px;
     margin-right: 340px;
@@ -42,6 +53,36 @@ p {
     height: auto;
     font-size: 220%;
 }
+
+.btn.btn-success.update {
+    margin-left: 10px;
+    margin-top: 0px;
+
+}
+.container.p-4{
+    width: auto;
+    height: auto;
+}
+
+.form-control-update {
+    width: 40%;
+    height: calc(1.3em + .75rem + 2px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #a9bdbd;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-left: 5px;
+    width: auto;
+    height: auto;
+
+}
+
+
+
 
 
 

@@ -13,17 +13,11 @@ const genreService = new GenreService();
 
 class UIPanel {
 
-    async loadSongs() {
-       return await songService.getSongs();
-
-    }
 
     async displayMatches(e) {
         const songs = await songService.searchSongLike(e.target.value);
-        console.log(e.target.value);
         const suggestions = document.querySelector('#table-hover');
         const categories = await categoryService.getCategories();
-        console.log(categories)
 
         const htmlCategory = this.inerHtmlCategories(categories);
 
@@ -34,9 +28,8 @@ class UIPanel {
 
             return `
                 <tbody>
-                <th scope="row">${song.title} </th> 
-                <td> id# ${song._id} </td> 
-                <td>
+                <th scope="row" width="50%"  >${song.title} </th> 
+                <td width="40%">
                     <select class="form-control" id="exampleSelect1-${song._id}"> 
                     <option value="" disabled selected>Select Category ...</option>
                 `
@@ -69,15 +62,14 @@ class UIPanel {
         lyricsPub.forEach( async (lyricPub)  => {
             const song = await songService.getSong(lyricPub.song);
             const categorySelected = await categoryService.getCategory(lyricPub.category);
-            console.log(categorySelected);
 
             const div = document.createElement('div');
             div.className = '';
             div.innerHTML = `
             <div class="card m-2">
             <div class="row">
-            <div class="col-md-8">
-            <div class="card-block px-2">
+            <div class="col-md-15">
+            <div class="card-block px-4">
             <h4 class="card-title"> ${song.title} </h4>
             <p class="card-text" id="song-id-${lyricPub._id}"> 
             </p>
@@ -124,8 +116,8 @@ class UIPanel {
         div.className = `alert alert-${colorMessage}`;
         div.appendChild(document.createTextNode(message));
 
-        const container = document.getElementById('app');
-        const searchForm = document.querySelector('.row');
+        const container = document.querySelector('.col-md-8');
+        const searchForm = document.querySelector('#search-form');
 
         container.insertBefore(div, searchForm);
         setTimeout(() => {

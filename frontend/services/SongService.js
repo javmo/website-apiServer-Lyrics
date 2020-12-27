@@ -1,7 +1,7 @@
 class SongService {
     constructor() {
-        this.URI =  'http://localhost:3000/api/songs';
-     //   this.URI =  '/api/songs';
+     //   this.URI =  'http://localhost:3000/api/songs';
+        this.URI =  '/api/songs';
     }
 
     async getSongs() {

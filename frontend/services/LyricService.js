@@ -1,7 +1,7 @@
 class LyricService {
     constructor() {
-        this.URI =  'http://localhost:3000/api/lyrics';
-      //  this.URI =  '/api/lyrics';
+      //  this.URI =  'http://localhost:3000/api/lyrics';
+        this.URI =  '/api/lyrics';
     }
 
     async getLyrics() {

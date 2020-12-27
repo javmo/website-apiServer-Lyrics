@@ -34,6 +34,15 @@ p {
     height: auto;
 
 }
+.btn.btn-success.publish {
+    margin-left: 80px;
+    margin-top: 00px;
+    width: auto;
+    height: auto;
+
+}
+
+
 .btn.btn-primary.btn-lg.btn-block{
     margin-left: 340px;
     margin-right: 340px;
@@ -48,7 +57,6 @@ p {
 .btn.btn-success.update {
     margin-left: 10px;
     margin-top: 0px;
-
 
 }
 .container.p-4{

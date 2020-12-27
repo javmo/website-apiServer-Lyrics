@@ -1,6 +1,5 @@
 import './styles/style.css';
 import UISongBook from "./UISongBook";
-import UI from "./UI";
 
 
 
@@ -18,8 +17,12 @@ document.getElementById('btn-update')
     .addEventListener('click', e => {
         if (e.target.classList.contains('update')) {
             const uiSongBook = new UISongBook();
+            if (document.querySelector('body-category-') == null) {
+                uiSongBook.renderCategory2();
+                uiSongBook.renderSongBook();
+            }
 
-            uiSongBook.renderSongBook();;
+            uiSongBook.renderSongBook();
         }
         e.preventDefault();
     });

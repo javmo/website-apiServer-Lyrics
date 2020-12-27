@@ -4,8 +4,9 @@ const CategorySchema = new Schema({
     categoryType: {
         type: String,
         // todo agregar orden a las cateogrias 
-        enum: ['ENTRADA', 'SALIDA', 'POST', 'PERDON', 'COMUNION', 'GLORIA', 'ALELUYA', 'OFRENDAS'],
+        enum: ['ENTRADA', 'PERDON',  'GLORIA', 'ALELUYA', 'OFRENDAS', 'CONSAGRACION', 'SANTOS/CORDEROS', 'COMUNION','POST-COMUNION', 'SALIDA'],
         default: 'ENTRADA'},
+    order: {type: Number, default: 99},
     created_at: { type: Date, default: Date.now }
 });
 
