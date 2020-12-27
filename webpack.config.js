@@ -10,8 +10,8 @@ module.exports = {
     entry: {
         index: './frontend/app.js',
         panel: './frontend/panel.js',
-        songBook: './frontend/songBook.js',
-        categoryABM: './frontend/categoryABM.js'
+        songBook: './frontend/songbook.js',
+        categoryABM: './frontend/categoryabm.js'
     },
 
     output: {
@@ -46,14 +46,14 @@ module.exports = {
             chunks: ['panel']
         }),
         new HtmlWebpackPlugin({
-            template: './frontend/songBook.html',
-            filename: 'songBook.html',
+            template: './frontend/songbook.html',
+            filename: 'songbook.html',
             chunks: ['songBook']
         }),
         new HtmlWebpackPlugin({
-            template: './frontend/categoryABM.html',
-            filename: 'categoryABM.html',
-            chunks: ['categoryABM']
+            template: './frontend/categoryabm.html',
+            filename: 'categoryabm.html',
+            chunks: ['categoryabm']
         })
     ],
     devtool: 'source-map'
