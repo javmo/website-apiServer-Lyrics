@@ -1,18 +1,14 @@
 {
   "name": "website-apiServer-Lyrics",
   "version": "1.0.0",
-  "description": "YOUR PROJECT DESCRIPTION GOES HERE",
+  "description": "website-apiServer-Lyrics",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon backend/index.js ",
-    "start": "cross-env NODE_ENV=production node backend/index.js",
+    "start": "node backend/index.js",
     "postinstall": "npm run build",
     "build": "cross-env NODE_ENV=production webpack",
     "server:dev": "webpack serve"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/javmo/website-apiServer-Lyrics.git"
   },
   "keywords": [
     "Who",
@@ -21,7 +17,7 @@
     "template",
     "node"
   ],
-  "author": "YOUR NAME GOES HERE",
+  "author": "javmo",
   "bugs": {
     "url": "https://github.com/javmo/website-apiServer-Lyrics.git/issues"
   },
