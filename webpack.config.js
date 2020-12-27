@@ -10,8 +10,8 @@ module.exports = {
     entry: {
         index: './frontend/app.js',
         panel: './frontend/panel.js',
-        songBook: './frontend/songbook.js',
-        categoryABM: './frontend/categoryabm.js'
+        songbook: './frontend/songbook.js',
+        categoryabm: './frontend/categoryabm.js'
     },
 
     output: {
