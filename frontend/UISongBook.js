@@ -22,6 +22,9 @@ class UISongBook {
 
             songsBookContainer.appendChild(div);
         })
+        return new Promise((resolve, reject) => {
+            resolve(true)
+        });
     }
 
     async renderCategory2() {
@@ -42,8 +45,11 @@ class UISongBook {
             div2.className = 'card-body';
             div2.id = 'body-category-'+ category._id;
             songsBookContainer.appendChild(div2);
-
         })
+        return new Promise((resolve, reject) => {
+            resolve(true)
+        });
+
     }
 
     async renderSongBook() {
@@ -70,8 +76,10 @@ class UISongBook {
                 ;
                 categoryContainer.appendChild(div);
             }
-
         })
+        return new Promise((resolve, reject) => {
+            resolve(true)
+        });
     }
 
 

@@ -8,12 +8,23 @@ import UISongBook from "./UISongBook";
 document.addEventListener('DOMContentLoaded', () => {
     const uiSongBook = new UISongBook();
 
-    uiSongBook.renderCategory();
-    uiSongBook.renderCategory2();
-    // se setea 1 seg de delay para darle tiempo a la carga
-    setTimeout(function (){ uiSongBook.renderSongBook()},1000);
-    setTimeout(function (){ document.querySelector(".preloader").style.display = "none" },1000);
+/*    uiSongBook.renderCategory()
+        .then(uiSongBook.renderCategory2()
+            .then(uiSongBook.renderSongBook()
+                .then(console.log('finpromesas'))))
+        .catch(function (err) {
+            console.log('promesa no cumplida')
+        })*/
 
+
+    uiSongBook.renderCategory()
+        .then(resolve => {
+            return uiSongBook.renderCategory2();
+        })
+        .then(resolve => {
+            return uiSongBook.renderSongBook();
+        })
+        .then(function (){ document.querySelector(".preloader").style.display = "none" });
 });
 
 document.getElementById('btn-update')
