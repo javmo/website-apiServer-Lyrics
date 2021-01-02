@@ -18,9 +18,7 @@ const createSong = async (req, res) => {
         lyric: await new Lyric(req.body.lyric).save()
     });
 
-   // const newSong = new Song({title, genre, lyric})
-    await newSong.save()
-    res.json({'message': 'Song Saved'});
+    res.json(await newSong.save());
 }
 
 const getSong = async (req, res) => {
