@@ -9,6 +9,7 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+
 // Initializations
 const app = express();
 require('./database');

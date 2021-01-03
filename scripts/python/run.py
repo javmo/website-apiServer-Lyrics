@@ -1,7 +1,10 @@
+import sys
 import requests
 import song_service
 from song_dto import Song
 import lacuerdanetscrapper
+
+
 
 def parse_and_create_song(url):
     print('Start', url)
@@ -26,6 +29,7 @@ def foreach(fn, iterable):
 
 
 # RUN
+"""
 url_list = [
     'https://acordes.lacuerda.net/abel_pintos/arder_en_libertad-2.shtml',
     'https://acordes.lacuerda.net/abel_pintos/arder_en_libertad-2.shtml',
@@ -34,5 +38,11 @@ url_list = [
     'https://acordes.lacuerda.net/airbag/cae_el_sol.shtml',
     'https://acordes.lacuerda.net/guasones/100_anios.shtml'
 ]
+"""
+
+url_list = [sys.argv[1]]
+print('el resultado consola')
+print(url_list)
+
 
 foreach(parse_and_create_song, url_list)

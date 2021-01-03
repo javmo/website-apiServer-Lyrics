@@ -39,6 +39,3 @@ def parse_song_from(URL):
         return Song(song_title, song_artist, chord_html, chord_text, lyric)
     except Exception as e:
         raise ValueError('Problem parsing URL {0}'.format(URL), e)
-
-
-parse_song_from('https://acordes.lacuerda.net/guasones/reyes_de_la_noche.shtml')
