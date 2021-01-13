@@ -22,8 +22,6 @@ def parse_song_from(URL):
         song_page = soup.find(id='mCols')
         song_header = song_page.find(id='tHead').find(id='tH1')
         song_body = song_page.find(id='t_body')
-        check_none("[lacuerdanetscrapper] song_title", song_header)
-        check_none("[lacuerdanetscrapper] song_body", song_body)
         song_title = song_header.find('h1').find('a').text
         song_artist = song_header.find('h2').find('a').text
         pre_tag = song_body.find('pre')
@@ -33,8 +31,6 @@ def parse_song_from(URL):
         remove_tags(pre_tag, ['div','a','em'])
 
         lyric = pre_tag.__str__()
-
-        print(lyric)
 
         return Song(song_title, song_artist, chord_html, chord_text, lyric)
     except Exception as e:

@@ -11,7 +11,8 @@ module.exports = {
         index: './frontend/app.js',
         panel: './frontend/panel.js',
         songbook: './frontend/songbook.js',
-        categoryabm: './frontend/categoryabm.js'
+        categoryabm: './frontend/categoryabm.js',
+        scrapingpanel: './frontend/scrapingpanel.js'
     },
 
     output: {
@@ -54,6 +55,11 @@ module.exports = {
             template: './frontend/categoryabm.html',
             filename: 'categoryabm.html',
             chunks: ['categoryabm']
+        }),
+        new HtmlWebpackPlugin({
+            template: './frontend/scrapingpanel.html',
+            filename: 'scrapingpanel.html',
+            chunks: ['scrapingpanel']
         })
     ],
     devtool: 'source-map'

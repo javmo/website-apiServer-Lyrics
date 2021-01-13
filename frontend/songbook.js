@@ -8,15 +8,6 @@ import UISongBook from "./UISongBook";
 document.addEventListener('DOMContentLoaded', () => {
     const uiSongBook = new UISongBook();
 
-/*    uiSongBook.renderCategory()
-        .then(uiSongBook.renderCategory2()
-            .then(uiSongBook.renderSongBook()
-                .then(console.log('finpromesas'))))
-        .catch(function (err) {
-            console.log('promesa no cumplida')
-        })*/
-
-
     uiSongBook.renderCategory()
         .then(resolve => {
             return uiSongBook.renderCategory2();
@@ -26,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(function (){ document.querySelector(".preloader").style.display = "none" });
 });
+
 
 document.getElementById('btn-update')
     .addEventListener('click', e => {

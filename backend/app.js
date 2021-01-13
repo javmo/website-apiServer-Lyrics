@@ -21,9 +21,6 @@ app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-
-
-
 // routes
 app.use('/api/songs', require('./routes/songs.routes'));
 app.use('/api/lyrics', require('./routes/lyrics.routes'));

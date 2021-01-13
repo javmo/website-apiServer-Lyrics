@@ -41,8 +41,6 @@ url_list = [
 """
 
 url_list = [sys.argv[1]]
-print('el resultado consola')
-print(url_list)
 
 
 foreach(parse_and_create_song, url_list)

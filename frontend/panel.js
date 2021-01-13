@@ -28,7 +28,6 @@ document.querySelector("#search-songs")
 document.getElementById('search-content')
     .addEventListener('click', e => {
         if (e.target.classList.contains('publish')) {
-            console.log('entra puiblish');
             const songId = e.target.getAttribute('_id');
             const categoryId = document.getElementById('exampleSelect1-' + songId)
                 .selectedOptions[0].value;

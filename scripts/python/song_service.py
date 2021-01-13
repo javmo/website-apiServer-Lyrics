@@ -1,8 +1,9 @@
 import requests
 
+path = 'http://192.168.0.27:3000'
 
 def search(song_title):
-    url = 'http://192.168.28.106:3000/api/songs/search/search?q={0}'.format(song_title)
+    url =  path+'/api/songs/search/search?q={0}'.format(song_title)
 
     response = requests.get(url)
 
@@ -22,7 +23,7 @@ def create(title, artist, lyric):
     headers = {
         "content_type":"application/json"
     }
-    url = 'http://192.168.28.106:3000/api/songs'
+    url = path+'/api/songs'
 
     response = requests.post(url, json=body, headers=headers)
 
@@ -42,7 +43,7 @@ def create_chord(song_id, chords_html):
     headers = {
         "content_type":"application/json"
     }
-    url = 'http://192.168.28.106:3000/api/lyricschord'
+    url = path+'/api/lyricschord'
 
     response = requests.post(url, json=body, headers=headers)
 
