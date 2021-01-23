@@ -43,7 +43,7 @@ class UIScrapingPanel {
     }
 
     validateUrl(url){
-        const laCuerdaUrl = "https://acordes.lacuerda.net";
+        const laCuerdaUrl = "lacuerda.net";
         const regex = new RegExp(laCuerdaUrl, 'gi')
         const inputUrl = document.getElementById('inputUrl');
         const validFeedback = document.getElementById('valid-feedback');
