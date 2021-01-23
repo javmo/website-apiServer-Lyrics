@@ -1,9 +1,13 @@
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-path = 'http://192.168.0.27:3000'
+API_URI = os.getenv("API_URI")
+
 
 def search(song_title):
-    url =  path+'/api/songs/search/search?q={0}'.format(song_title)
+    url =  API_URI + '/api/songs/search/search?q={0}'.format(song_title)
 
     response = requests.get(url)
 
@@ -23,7 +27,7 @@ def create(title, artist, lyric):
     headers = {
         "content_type":"application/json"
     }
-    url = path+'/api/songs'
+    url = API_URI + '/api/songs'
 
     response = requests.post(url, json=body, headers=headers)
 
@@ -43,7 +47,7 @@ def create_chord(song_id, chords_html):
     headers = {
         "content_type":"application/json"
     }
-    url = path+'/api/lyricschord'
+    url = API_URI + '/api/lyricschord'
 
     response = requests.post(url, json=body, headers=headers)
 

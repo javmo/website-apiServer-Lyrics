@@ -3,9 +3,10 @@ const  router = Router();
 
 
 
-const { scrapingWithUrl } = require('../controllers/scraping.controllers')
+const { scrapingWithUrl, createScrapSong } = require('../controllers/scraping.controllers')
 
 router.get('/search', scrapingWithUrl);
+router.post('/', createScrapSong);
 /*router.get('/:id', getSong);
 router.post('/', createSong);
 router.get('/search/search', likeSongs);

@@ -11,6 +11,14 @@ document.getElementById('scrap-form')
             const uiScrapingPanel = new UIScrapingPanel();
             uiScrapingPanel.renderScrapSong(url);
         }
+        else if (e.target.classList.contains('saveMeScrap')) {
+            const url = e.target.getAttribute('_id');
+
+            console.log(url);
+            const uiScrapingPanel = new UIScrapingPanel();
+            uiScrapingPanel.saveScrapSong(url);
+        }
+
         e.preventDefault();
     });
 

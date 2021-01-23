@@ -1,6 +1,4 @@
-import LyricPublishService from "./services/LyricPublishService";
 import ScrapingService from "./services/ScrapingService";
-import UISongBook from "./UISongBook";
 const scrapingService = new ScrapingService();
 
 
@@ -40,6 +38,15 @@ class UIScrapingPanel {
         `
         songChordScrapCard.appendChild(divChord);
 
+        const btnScrap = document.getElementById('scrap');
+
+        const divSaveMe = document.createElement('div');
+
+        divSaveMe.innerHTML = `
+        <button type="button" class="btn btn-primary btn-lg saveMeScrap" _id="${url}">Save song!</button>
+        `;
+
+        btnScrap.appendChild(divSaveMe);
     }
 
     validateUrl(url){
@@ -68,6 +75,11 @@ class UIScrapingPanel {
         }
     }
 
+    async saveScrapSong(url) {
+        const scrapSong = await scrapingService.postScrapSong(url);
+        window.alert(scrapSong);
+
+    }
 
 }
 export default UIScrapingPanel;

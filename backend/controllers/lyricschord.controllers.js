@@ -14,15 +14,22 @@ const createLyricChord = async (req, res, next) => {
         text: req.body.text
     });
     await newLyricChord.save()
+        .then(() =>{
+            res.json({Chord: 'Chord Saved!'});
+        })
         .catch((err) => {
             res.status(400);
             return next(err)});
-
-    res.json(await newLyricChord.save());
 }
 
 const getLyricChord = async (req, res) => {
     const lyricChord = await LyricChord.findById(req.params.id);
+    res.json(lyricChord)
+}
+
+const getLyricChordBySongId = async (req, res) => {
+
+    const lyricChord = await LyricChord.findOne({ song:  req.query.songId });
     res.json(lyricChord)
 }
 
@@ -31,5 +38,6 @@ const getLyricChord = async (req, res) => {
 module.exports = {
     getLyricsChord,
     createLyricChord,
-    getLyricChord
+    getLyricChord,
+    getLyricChordBySongId
 }

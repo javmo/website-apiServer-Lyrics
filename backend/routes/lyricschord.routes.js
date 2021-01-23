@@ -3,8 +3,9 @@ const  router = Router();
 
 
 
-const { getLyricsChord, createLyricChord, getLyricChord, updateSong, deleteSong, likeSongs } = require('../controllers/lyricschord.controllers')
+const { getLyricsChord, createLyricChord, getLyricChord, getLyricChordBySongId, deleteSong, likeSongs } = require('../controllers/lyricschord.controllers')
 
+router.get('/bysongid', getLyricChordBySongId);
 router.get('/', getLyricsChord);
 router.get('/:id', getLyricChord);
 router.post('/', createLyricChord);

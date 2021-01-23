@@ -4,7 +4,6 @@ const {PythonShell} =require('python-shell');
 const scrapingWithUrl = async (req, res) => {
     const url = req.query.url;
 
-    console.log(url);
     let options = {
         mode: 'text',
         pythonOptions: ['-u'], // get print results in real-time
@@ -25,6 +24,30 @@ const scrapingWithUrl = async (req, res) => {
 };
 
 
+const createScrapSong = async (req, res) => {
+    const url = req.body.url;
+
+    console.log(url);
+    let options = {
+        mode: 'text',
+        pythonOptions: ['-u'], // get print results in real-time
+        scriptPath: './scripts/python/', //If you are having python_test.py script in same folder, then it's optional.
+        args: [url] //An argument which can be accessed in the script using sys.argv[1]
+    };
+
+    PythonShell.run('run.py', options, function (err, result){
+        if (err) throw err;
+        // result is an array consisting of messages collected
+        //during execution of script.
+        console.log('API-log: ', result);
+
+        res.json('Python-log: ' + result)
+    });
+
+};
+
+
 module.exports = {
-    scrapingWithUrl
+    scrapingWithUrl,
+    createScrapSong
 }

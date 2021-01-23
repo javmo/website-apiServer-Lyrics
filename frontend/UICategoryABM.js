@@ -20,7 +20,7 @@ class UICategoryABM {
             <p class="card-text" id="category-id-${category._id}"> 
             </p>
             <div class="form-group">
-                <label class="col-form-label col-form-label-sm" for="inputSmall">Order Category</label>
+                <label class="col-form-label col-form-label-sm" for="inputSmall">Order </label>
                 <input class="form-control form-control-sm" type="number" placeholder="${category.order}" id="orderCategory-${category._id}">
             </div>
             <a href="#" class="btn btn-danger delete" _id="${category._id}">Delete</a>

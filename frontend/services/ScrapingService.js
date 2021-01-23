@@ -14,6 +14,19 @@ class ScrapingService {
         });
         return await response.json();
     }
+
+    async postScrapSong(url) {
+        console.log(url);
+        const response = await fetch(this.URI, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({url: url})
+        });
+        return await response.json();
+    }
+
 }
 
 export default ScrapingService;

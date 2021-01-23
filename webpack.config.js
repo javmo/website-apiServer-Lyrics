@@ -12,7 +12,8 @@ module.exports = {
         panel: './frontend/panel.js',
         songbook: './frontend/songbook.js',
         categoryabm: './frontend/categoryabm.js',
-        scrapingpanel: './frontend/scrapingpanel.js'
+        scrapingpanel: './frontend/scrapingpanel.js',
+        songbookchord: './frontend/songbookchord.js'
     },
 
     output: {
@@ -60,6 +61,11 @@ module.exports = {
             template: './frontend/scrapingpanel.html',
             filename: 'scrapingpanel.html',
             chunks: ['scrapingpanel']
+        }),
+        new HtmlWebpackPlugin({
+            template: './frontend/songbookchord.html',
+            filename: 'songbookchord.html',
+            chunks: ['songbookchord']
         })
     ],
     devtool: 'source-map'
