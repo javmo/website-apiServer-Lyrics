@@ -23,11 +23,8 @@ const getLyric = async (req, res) => {
 }
 
 const updateLyric = async (req, res) => {
-    const result = await getConnection().get('lyrics').find({id: req.params.id})
-        // asigna al lo que viene en el body al id que encontro en tabla tasks
-        .assign(req.body)
-        // graba el registro actualizado
-        .write();
+
+    const result = await Lyric.findByIdAndUpdate(req.params.id, req.body, {useFindAndModify: false});
     res.json(result);
 }
 

@@ -1,5 +1,6 @@
 const Song = require('../models/Song');
 const Lyric = require('../models/Lyric');
+const LyricChord = require('../models/LyricChord');
 
 // aca se definen funcionalidad sobre la db por ejemplo getTask devuele todas la tareas
 const getSongs = async (req ,res) => {
@@ -29,7 +30,6 @@ const getSong = async (req, res) => {
         res.json(song);
 }
 
-
 /*const updateSong = async (req, res) => {
     const result = await getConnection().get('songs').find({id: req.params.id})
         // asigna al lo que viene en el body al id que encontro en tabla tasks
@@ -43,6 +43,7 @@ const deleteSong = async (req, res) => {
     const song = await Song.findByIdAndDelete(req.params.id);
     // tambien de elimina la letra
     await Lyric.findByIdAndDelete(song.lyric._id);
+    await LyricChord.findOneAndDelete({ song: song._id });
     res.json({'message': 'Song Deleted'});
 }
 

@@ -41,5 +41,16 @@ class LyricService {
         const data = await response.json();
     }
 
+    async updateLyric(lyric) {
+        const response = await fetch(`${this.URI}/${lyric._id}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(lyric)
+        });
+        return await response.json();
+    }
+
 }
 export default LyricService;

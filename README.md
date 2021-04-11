@@ -60,6 +60,12 @@ Using this template, you can
   
   Instalar mongoDB https://www.mongodb.com/try/download/community?tck=docs_server
 
+Instalar python 
+
+* dotenv for python
+`pip3 install python-dotenv`
+
+
 ## File Structure
 
 ```
@@ -92,6 +98,10 @@ frontend/               Folder you will be working out of
 ----css/              folder of .css stylesheet files
 --------style.css     CSS stylesheet. Included in index.html
 ----
+scripts/               folder of python scripts 
+----python/
+--------readme.md       instruccion to install de enviroment  
+
          DO NOT TOUCH. Serves up index.html on a web server
 package.json          DO NOT TOUCH. Node-js package.json file that
                            recognizes this project as a Node-js app

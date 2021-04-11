@@ -4,12 +4,12 @@ class LyricChordService {
         this.URI =  '/api/lyricschord';
     }
 
-/*    async getLyrics() {
+    async getLyricsChord() {
         // fetch por defecto hace GET
         const response = await fetch(this.URI);
-        const lyric = await response.json()
-        return lyric;
-    }*/
+        const lyricChords = await response.json()
+        return lyricChords;
+    }
 
     async getLyricChordBySong(songId) {
         const response = await fetch(`${this.URI}/bysongid?songId=${songId}`, {
@@ -19,27 +19,38 @@ class LyricChordService {
         return lyricChord;
     }
 
- /*   async postLyric(lyric) {
-        console.log(lyric, 'ANTES LOG');
+    async postLyric(lyricChord) {
+        console.log(lyricChord, 'ANTES LOG');
         const reponse = await fetch(this.URI, {
             headers: {
                 'Content-Type': 'application/json'
             },
             method: 'POST',
-            body: lyric
+            body: JSON.stringify(lyricChord)
         });
         const data = await reponse.json();
     }
 
-    async deleteLyric(lyricId) {
-        const response = await fetch(`${this.URI}/${lyricId}`, {
+    async updateLyricChord(lyricChord) {
+        const response = await fetch(`${this.URI}/${lyricChord._id}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(lyricChord)
+        });
+        return await response.json();
+    }
+
+    async deleteLyric(lyricChordId) {
+        const response = await fetch(`${this.URI}/${lyricChordId}`, {
             headers: {
                 'Content-Type': 'application/json'
             },
             method: 'DELETE'
         });
         const data = await response.json();
-    }*/
+    }
 
 }
 export default LyricChordService;

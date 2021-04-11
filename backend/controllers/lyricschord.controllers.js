@@ -30,8 +30,24 @@ const getLyricChord = async (req, res) => {
 const getLyricChordBySongId = async (req, res) => {
 
     const lyricChord = await LyricChord.findOne({ song:  req.query.songId });
-    res.json(lyricChord)
+    if(lyricChord == null)
+        res.json({text: '[CHORDS NOT FOUND]'});
+    else
+        res.json(lyricChord);
 }
+
+const deleteLyricChord = async (req, res) => {
+    const lyricChord = await LyricChord.findByIdAndDelete(req.params.id);
+    res.json({'message': 'Song Deleted'});
+}
+
+const updateLyricChord = async (req, res) => {
+    const result = await LyricChord.findByIdAndUpdate(req.params.id, req.body, {useFindAndModify: false});
+
+    res.json(result);
+};
+
+
 
 
 
@@ -39,5 +55,7 @@ module.exports = {
     getLyricsChord,
     createLyricChord,
     getLyricChord,
-    getLyricChordBySongId
+    getLyricChordBySongId,
+    deleteLyricChord,
+    updateLyricChord
 }
