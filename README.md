@@ -35,6 +35,15 @@ $ npm start
 
 and hit ENTER to start a web server that will serve your webpage! Then you can go to [http://localhost:8080](http://localhost:8080) to see your new website in action!
 
+## Development with docker
+
+* Build the images
+`$ docker-compose build `
+* Up the containers 
+`docker-compose up -d `
+
+
+
 ## Development
 
 Using this template, you can
