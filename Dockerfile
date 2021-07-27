@@ -16,17 +16,16 @@ RUN pip3 install -r /tmp/requirements.txt
 
 COPY . /tmp/
 # --------------------------------
-
-
 RUN mkdir -p /src/app
 
 WORKDIR /src/app
 
 COPY package*.json ./
+COPY . .
 
 RUN npm install
 
-COPY . .
+
 
 
 CMD [ "npm", "run", "start" ]
