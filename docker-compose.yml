@@ -3,18 +3,15 @@ version: '3'
 services:
   nodejs:
     build: .
-    image: javmo94/api-lyric:latest
+    image: javmo94/api-lyric
     container_name: nodejs
     restart: unless-stopped
-    env_file: .env
     environment:
       - API_URI=localhost:3000
       - MONGODB_URI=mongodb://javmo:javmo@db:27017/lyricdb?authSource=admin
 
     ports:
       - "3000:3000"
-    volumes:
-      - .:/src
     command: npm run start
     depends_on:
       - db
@@ -30,8 +27,6 @@ services:
         - MONGO_INITDB_ROOT_USERNAME=javmo
         - MONGO_INITDB_ROOT_PASSWORD=javmo
         - MONGO_INITDB_DATABASE=lyricdb
-      volumes:
-        - /Users/javmo/Desktop/mongo-docker-example:/data/db
       networks:
         - app-network
 networks:

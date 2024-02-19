@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 // routes
 app.use('/api/songs', require('./routes/songs.routes'));
 app.use('/api/lyrics', require('./routes/lyrics.routes'));
+app.use('/api/lyricNormalized', require('./routes/lyricNormalized.routes'));
 app.use('/api/genres', require('./routes/genres.routes'));
 app.use('/api/lyricsPublish', require('./routes/lyricspublish.routes'));
 app.use('/api/category', require('./routes/category.routes'));
