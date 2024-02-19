@@ -2,17 +2,13 @@
 # use the command line to execute commands
 FROM alpine
 
-
-# copy the dependencies file to the working directory
 COPY ./requirements.txt /tmp/
 
-
 # Setup
-RUN apk update
-RUN apk upgrade
-RUN apk add --update python3 py3-pip python3-dev nodejs npm
-RUN pip3 install --upgrade pip
-RUN pip3 install -r /tmp/requirements.txt
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache python3 py3-pip python3-dev nodejs npm && \
+    pip3 install --no-cache-dir -r /tmp/requirements.txt
 
 COPY . /tmp/
 # --------------------------------
