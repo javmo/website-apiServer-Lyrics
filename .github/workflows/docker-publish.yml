@@ -3,7 +3,7 @@ name: Build and Push Docker image
 on:
   push:
     branches:
-      - main  # Cambia esto por la rama que quieras usar
+      - master  # Cambia esto por la rama que quieras usar
 
 jobs:
   build-and-push:
