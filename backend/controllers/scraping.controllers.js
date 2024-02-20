@@ -23,6 +23,37 @@ const scrapingWithUrl = async (req, res) => {
 
 };
 
+const scrapingLectura = async (req, res) => {
+
+    let options = {
+        mode: 'text',
+        pythonOptions: ['-u'], // get print results in real-time
+        scriptPath: './scripts/python/', //If you are having python_test.py script in same folder, then it's optional.
+    };
+
+    PythonShell.run('scraping_lectura.py', options, function (err, result) {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error al ejecutar el script de Python');
+        }
+        
+        // Concatena todos los elementos del array para formar el JSON completo
+        const resultString = result.join('');
+        try {
+            const resJson = JSON.parse(resultString);
+            console.log('API-log: ', resJson);
+            res.json(resJson);
+        } catch (error) {
+            console.error('Error parsing result from Python script', error);
+            res.status(500).send('Error al procesar los resultados del script de Python');
+        }
+    });
+    
+      
+    
+
+};
+
 
 const createScrapSong = async (req, res) => {
     const url = req.body.url;
@@ -49,5 +80,6 @@ const createScrapSong = async (req, res) => {
 
 module.exports = {
     scrapingWithUrl,
-    createScrapSong
+    createScrapSong,
+    scrapingLectura
 }
