@@ -6,6 +6,7 @@ const getLyrics = async (req, res) => {
     res.json(lyrics);
 };
 
+
 const createLyric = async (req, res) => {
     // Levanta del POST el JSON que se le envía con el campo text como un arreglo de strings
     const newLyric = new LyricNormalized({
