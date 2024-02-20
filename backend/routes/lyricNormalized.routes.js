@@ -10,5 +10,4 @@ router.post('/', createLyric);
 router.put('/:id', updateLyric);
 router.delete('/:id', deleteLyric);
 
-
 module.exports = router;
