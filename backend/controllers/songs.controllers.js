@@ -1,7 +1,6 @@
 const Song = require('../models/Song');
 const Lyric = require('../models/Lyric');
 const LyricChord = require('../models/LyricChord');
-
 // aca se definen funcionalidad sobre la db por ejemplo getTask devuele todas la tareas
 const getSongs = async (req ,res) => {
     // busca en los valores de task en el json y los trae
@@ -52,11 +51,32 @@ const likeSongs = async (req, res) => {
     res.json(songs);
 };
 
+const getSongByLyricId = async (req, res) => {
+    try {
+        // Obtener el lyricID de los parámetros de la solicitud
+        const lyricId = req.params.lyricId;
+
+        // Buscar en las canciones que tienen una referencia al lyricId proporcionado
+        const song = await Song.findOne({ lyric: lyricId })
+        if (!song) {
+            return res.status(404).json({ message: "No song found with the provided lyric ID." });
+        }
+
+        // Devolver la canción encontrada
+        res.json(song);
+    } catch (error) {
+        console.error('Error searching song by lyric ID:', error);
+        res.status(500).json({ message: "Error searching for a song by lyric ID." });
+    }
+}
+
+
 module.exports = {
     getSongs,
     createSong,
     getSong,
     likeSongs,
     /*updateSong,*/
-    deleteSong
+    deleteSong,
+    getSongByLyricId
 }

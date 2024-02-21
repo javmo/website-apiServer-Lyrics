@@ -40,7 +40,6 @@ const scrapingLectura = async (req, res) => {
         const resultString = result.join('');
         try {
             const resJson = JSON.parse(resultString);
-            console.log('API-log: ', resJson);
             res.json(resJson);
         } catch (error) {
             console.error('Error parsing result from Python script', error);
