@@ -1,27 +1,27 @@
-# Usar Alpine como imagen base
-FROM alpine
+# Usar una imagen base oficial de Python
+FROM python:3.8-slim
 
-# Instalar dependencias del sistema necesarias para Python y Node.js
-RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache python3 py3-pip python3-dev nodejs npm
+# Instalar dependencias del sistema necesarias, incluyendo compiladores y bibliotecas BLAS/LAPACK
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libblas-dev \
+    liblapack-dev \
+    gfortran \
+    nodejs \
+    npm \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Crear un entorno virtual para las dependencias de Python
-RUN python3 -m venv /app/venv
-
-# Establecer el entorno virtual como el entorno predeterminado
-ENV PATH="/app/venv/bin:$PATH"
+WORKDIR /app
 
 # Copiar el archivo de dependencias de Python al directorio de trabajo
 COPY ./requirements.txt /app/requirements.txt
 
-WORKDIR /app
-
-# Instalar las dependencias de Python dentro del entorno virtual
+# Instalar las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar el código fuente de la aplicación al contenedor
 COPY . .
+
 # Antes de correr npm install y npm run build
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
