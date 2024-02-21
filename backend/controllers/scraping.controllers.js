@@ -16,7 +16,6 @@ const scrapingWithUrl = async (req, res) => {
         // result is an array consisting of messages collected
         //during execution of script.
         var resJson = JSON.parse(result[0])
-        console.log('API-log: ', resJson);
 
         res.json(resJson)
     });
@@ -48,10 +47,6 @@ const scrapingLectura = async (req, res) => {
             res.status(500).send('Error al procesar los resultados del script de Python');
         }
     });
-    
-      
-    
-
 };
 
 

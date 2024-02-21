@@ -10,6 +10,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 
+
 // Initializations
 const app = express();
 require('./database');
@@ -30,6 +31,7 @@ app.use('/api/lyricsPublish', require('./routes/lyricspublish.routes'));
 app.use('/api/category', require('./routes/category.routes'));
 app.use('/api/lyricschord', require('./routes/lyricschord.routes'));
 app.use('/api/scraping', require('./routes/scraping.routes'));
+app.use('/api/openia', require('./routes/openia.routes'));
 
 
 // static files
