@@ -1,6 +1,7 @@
 const Song = require('../models/Song');
 const Lyric = require('../models/Lyric');
 const LyricChord = require('../models/LyricChord');
+const LyricNormalized = require('../models/LyricNormalized');
 // aca se definen funcionalidad sobre la db por ejemplo getTask devuele todas la tareas
 const getSongs = async (req ,res) => {
     // busca en los valores de task en el json y los trae
@@ -9,15 +10,35 @@ const getSongs = async (req ,res) => {
 };
 
 const createSong = async (req, res) => {
-    // levanta del post el json que se le envia con los campos name y description
-   // console.log(req);
+    // Primero, crear y guardar la letra en el formato original.
+    const originalLyric = new Lyric({
+        // Asumiendo que el modelo Lyric espera un campo `text` con la letra completa.
+        text: req.body.lyric
+    });
+    //const savedOriginalLyric = await originalLyric.save();
+    const lyricText = req.body.lyric.text;
+    const cleanLyric = lyricText.replace(/<\/?pre>/g, '').trim();
+    // Procesar la letra limpia para convertirla en un arreglo de estrofas.
+    const lyricsArray = cleanLyric.split('\n\n')
+                          .map(verse => verse.trim()) // Limpiar espacios al inicio y al final de cada estrofa.
+                          .filter(verse => verse.length > 0) // Filtrar estrofas vacías.
+                          .map(verse => verse.replace(/\n/g, ', ')); // Reemplazar saltos de línea dentro de las estrofas.
+
+    // A partir de aquí, continúas con la lógica para crear y guardar la instancia de LyricNormalized y Song como antes.
+    const normalizedLyric = new LyricNormalized({
+        text: lyricsArray
+    });
+    // Guardar la letra normalizada en la base de datos.
+    await normalizedLyric.save();
+
+    // Crear la canción con referencia a la letra (en este caso, ambos documentos tienen el mismo ID).
     const newSong = new Song({
         title: req.body.title,
         genre: req.body.genre,
-        // se graba la letra previo a grabar la cancion
-        lyric: await new Lyric(req.body.lyric).save()
+        lyric: await normalizedLyric.save(), // ID de la letra, que ahora aplica a ambos formatos.
     });
 
+    // Guardar la canción en la base de datos y enviar la respuesta.
     res.json(await newSong.save());
 }
 
@@ -70,6 +91,32 @@ const getSongByLyricId = async (req, res) => {
     }
 }
 
+const searchSongsByLyricText = async (req, res) => {
+    try {
+        // Realizar una búsqueda de texto completo en LyricNormalized y proyectar el textScore
+        const lyrics = await LyricNormalized.find(
+            { $text: { $search: `"${req.query.q}"` } },
+            { score: { $meta: "textScore" } }
+        ).sort({ score: { $meta: "textScore" } }); // Ordenar por relevancia
+
+        // Extraer los IDs de las letras encontradas
+        const lyricIds = lyrics.map(lyric => lyric._id);
+
+        // Buscar canciones que coincidan con los IDs de las letras
+        const songs = await Song.find(
+            { lyric: { $in: lyricIds } }
+        );
+
+        res.json(songs);
+    } catch (error) {
+        console.error('Error searching songs by lyric text:', error);
+        res.status(500).json({ message: "Error searching for songs by lyric text." });
+    }
+};
+
+
+
+
 
 module.exports = {
     getSongs,
@@ -78,5 +125,6 @@ module.exports = {
     likeSongs,
     /*updateSong,*/
     deleteSong,
-    getSongByLyricId
+    getSongByLyricId,
+    searchSongsByLyricText
 }

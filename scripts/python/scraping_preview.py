@@ -4,6 +4,7 @@ import json
 from os import system
 from song_dto import Song
 from lacuerdanetscrapper import parse_song_from
+from genericscrapper import scrape_song
 
 url = sys.argv[1]
 

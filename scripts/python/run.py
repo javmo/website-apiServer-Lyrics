@@ -4,6 +4,7 @@ import requests
 import song_service
 from song_dto import Song
 import lacuerdanetscrapper
+import genericscrapper
 
 
 
