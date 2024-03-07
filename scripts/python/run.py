@@ -10,7 +10,8 @@ import genericscrapper
 
 def parse_and_create_song(url):
     print('Start', url)
-    song = lacuerdanetscrapper.parse_song_from(url)
+    #song = lacuerdanetscrapper.parse_song_from(url)
+    song = genericscrapper.scrape_song(url)
     results = song_service.search(song.title)
 
     if (len(results) < 1):

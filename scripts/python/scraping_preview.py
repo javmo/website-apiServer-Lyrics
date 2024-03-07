@@ -10,7 +10,8 @@ url = sys.argv[1]
 
 
 try:
-    song=parse_song_from(url)
+    #song=parse_song_from(url)
+    song=scrape_song(url)
     body = {
         'title': song.title,
         'artist': song.artist,

@@ -21,6 +21,10 @@ const WebConfigScrapperSchema = new Schema({
         type: String,
         required: false
     },
+    chords_selector_tag: {
+        type: String,
+        required: false
+    },
     lyrics_container_selector: {
         type: String,
         required: false // Agregado para especificar el contenedor de las letras

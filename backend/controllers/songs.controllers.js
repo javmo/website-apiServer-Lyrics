@@ -10,37 +10,44 @@ const getSongs = async (req ,res) => {
 };
 
 const createSong = async (req, res) => {
-    // Primero, crear y guardar la letra en el formato original.
-    const originalLyric = new Lyric({
-        // Asumiendo que el modelo Lyric espera un campo `text` con la letra completa.
-        text: req.body.lyric
-    });
-    //const savedOriginalLyric = await originalLyric.save();
     const lyricText = req.body.lyric.text;
+    // Limpieza inicial de etiquetas HTML si existen
     const cleanLyric = lyricText.replace(/<\/?pre>/g, '').trim();
-    // Procesar la letra limpia para convertirla en un arreglo de estrofas.
-    const lyricsArray = cleanLyric.split('\n\n')
-                          .map(verse => verse.trim()) // Limpiar espacios al inicio y al final de cada estrofa.
-                          .filter(verse => verse.length > 0) // Filtrar estrofas vacías.
-                          .map(verse => verse.replace(/\n/g, ', ')); // Reemplazar saltos de línea dentro de las estrofas.
 
-    // A partir de aquí, continúas con la lógica para crear y guardar la instancia de LyricNormalized y Song como antes.
+    // Dividir por líneas primero
+    let lines = cleanLyric.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+
+    // Intentar identificar pausas naturales para nuevas estrofas
+    let lyricsArray = [];
+    let currentVerse = [];
+    lines.forEach((line, index) => {
+        currentVerse.push(line);
+        // Si la línea termina con un signo de puntuación fuerte o es significativamente más corta que la anterior, considerar como el final de una estrofa
+        if (/\.(?!\d)|!|\?/.test(line) || (lines[index + 1] && line.length > 4 && lines[index + 1].length < line.length / 2)) {
+            lyricsArray.push(currentVerse.join(', '));
+            currentVerse = [];
+        }
+    });
+
+    // Asegurarse de incluir la última estrofa si no termina con un signo de puntuación fuerte
+    if (currentVerse.length > 0) {
+        lyricsArray.push(currentVerse.join(', '));
+    }
+
+    // El resto del proceso de creación y guardado de la canción...
     const normalizedLyric = new LyricNormalized({
         text: lyricsArray
     });
-    // Guardar la letra normalizada en la base de datos.
-    await normalizedLyric.save();
-
-    // Crear la canción con referencia a la letra (en este caso, ambos documentos tienen el mismo ID).
     const newSong = new Song({
         title: req.body.title,
         genre: req.body.genre,
         lyric: await normalizedLyric.save(), // ID de la letra, que ahora aplica a ambos formatos.
     });
 
-    // Guardar la canción en la base de datos y enviar la respuesta.
+    // Guardar la letra normalizada y crear la canción...
     res.json(await newSong.save());
 }
+
 
 const getSong = async (req, res) => {
     const song = await Song.findById(req.params.id);
@@ -64,6 +71,7 @@ const deleteSong = async (req, res) => {
     // tambien de elimina la letra
     await Lyric.findByIdAndDelete(song.lyric._id);
     await LyricChord.findOneAndDelete({ song: song._id });
+    await LyricNormalized.findOneAndDelete({ lyric: song.lyric._id });
     res.json({'message': 'Song Deleted'});
 }
 

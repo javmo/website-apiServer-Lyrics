@@ -20,6 +20,16 @@ def get_scraping_config(url):
     else:
         raise Exception("No se pudo obtener la configuración para el dominio.")
 
+def decompose_chords(lyrics_container, chords_selector):
+    if '[' in chords_selector:  # Asumimos que especifica un atributo
+        # Utiliza select para manejar selectores CSS complejos
+        for chord_element in lyrics_container.select(chords_selector):
+            chord_element.decompose()
+    else:
+        # Trata directamente como tag o clase
+        for chord_element in lyrics_container.find_all(chords_selector):
+            chord_element.decompose()
+
 def scrape_song(url):
     config = get_scraping_config(url)
     response = requests.get(url)
@@ -34,30 +44,27 @@ def extract_song_info(soup, config):
 
         # Find the lyrics container
         lyrics_container = soup.select_one(config['lyrics_selector'])
+        lyrics_container2 = soup.select_one(config['lyrics_selector'])
 
-        # For chords: Directly use the text from lyrics_container
+        # Remove chords
+        decompose_chords(lyrics_container, config['chords_selector'])
+
         chord_text = lyrics_container.get_text(separator="\n", strip=True)
 
-        # For clean lyrics: Remove or ignore spans with chords
-        # This is pseudo-code. Implement based on actual HTML structure.
-        for chord_span in lyrics_container.find_all("span", {"class": "chord"}):
-            chord_span.decompose()  # Or another method to exclude chords
-        clean_lyrics = lyrics_container.get_text(separator="\n", strip=True)
+        # Assuming after chord removal, the clean lyrics are the same as chord_text
+        clean_lyrics = chord_text
 
         return Song(song_title, song_artist, lyrics_container.prettify(), chord_text, clean_lyrics)
     except AttributeError as e:
         raise ValueError(f"Error extracting song info: {e}")
 
-
-
 # Ejemplo de uso
 if __name__ == "__main__":
-    url = "https://www.pastoraldemusica.org.ar/cancionero/cancion.php?id=195"
+    url = "https://www.pastoraldemusica.org.ar/cancionero/cancion.php?id=267"
     try:
         song = scrape_song(url)
         print(f"Título: {song.title}, Artista: {song.artist}")
         print(f"Acordes: {song.chord_html}")
-        print(f"chord_text: {song.chord_text}")
         print(f"Letra: {song.lyric_text}")
     except Exception as e:
         print(f"Error al scrapear la canción: {e}")
