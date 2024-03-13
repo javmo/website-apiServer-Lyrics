@@ -1,7 +1,7 @@
 # Usar una imagen base oficial de Python
 FROM python:3.8-slim
 
-# Instalar dependencias del sistema necesarias, incluyendo compiladores y bibliotecas BLAS/LAPACK
+# Instalar dependencias del sistema necesarias, incluyendo compiladores, bibliotecas BLAS/LAPACK, y Tesseract
 RUN apt-get update && apt-get install -y \
     build-essential \
     libblas-dev \
@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     gfortran \
     nodejs \
     npm \
+    tesseract-ocr \
+    tesseract-ocr-spa \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -29,4 +31,4 @@ ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm install && npm run build
 
 # Definir el comando para ejecutar la aplicación
-CMD [ "npm", "run", "start" ]
+CMD ["npm", "run", "start"]

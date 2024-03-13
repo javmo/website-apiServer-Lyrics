@@ -33,6 +33,7 @@ app.use('/api/lyricschord', require('./routes/lyricschord.routes'));
 app.use('/api/scraping', require('./routes/scraping.routes'));
 app.use('/api/openia', require('./routes/openia.routes'));
 app.use('/api/webConfigScrapper', require('./routes/webconfigscrapper.routes'));
+app.use('/api/scaner', require('./routes/scaner.routes'));
 
 
 // static files
