@@ -1,6 +1,11 @@
 import requests
 import json
+import re
 from datetime import datetime
+
+def remove_verse_annotations(text):
+    # Usar regex para eliminar los patrones que corresponden a las notas de versículos
+    return re.sub(r'\[\[.*?\]\]', '', text)
 
 def parse_lectura_from(date):
     url = f'https://publication.evangelizo.ws/SP/days/{date}?from=gospelComponent'
@@ -12,22 +17,21 @@ def parse_lectura_from(date):
     # Ordenar lecturas por su tipo para asegurar que correspondan con la estructura antigua
     readings = {reading['type']: reading for reading in data['data']['readings']}
 
-    # Extraer la primera lectura
+    # Extraer y limpiar la primera lectura
     first_reading = readings.get('reading')
-    lectura_data['Primera lectura'] = first_reading['text'].replace("\r\n", "\n") if first_reading else "No disponible"
+    lectura_data['Primera lectura'] = remove_verse_annotations(first_reading['text'].replace("\r\n", "\n")) if first_reading else "No disponible"
     
-    # Extraer el salmo
+    # Extraer y limpiar el salmo
     psalm = readings.get('psalm')
-    lectura_data['Salmo'] = psalm['text'].replace("\r\n", "\n") if psalm else "No disponible"
+    lectura_data['Salmo'] = remove_verse_annotations(psalm['text'].replace("\r\n", "\n")) if psalm else "No disponible"
     
-    # Extraer la segunda lectura
-    # En algunos días como domingos y festividades puede haber una segunda lectura
+    # Extraer y limpiar la segunda lectura si está disponible
     second_reading = readings.get('second_reading')  # Asegúrate de conocer la clave correcta si es diferente
-    lectura_data['Segunda lectura'] = second_reading['text'].replace("\r\n", "\n") if second_reading else "No disponible"
+    lectura_data['Segunda lectura'] = remove_verse_annotations(second_reading['text'].replace("\r\n", "\n")) if second_reading else "No disponible"
     
-    # Extraer el evangelio
+    # Extraer y limpiar el evangelio
     gospel = readings.get('gospel')
-    lectura_data['Evangelio'] = gospel['text'].replace("\r\n", "\n") if gospel else "No disponible"
+    lectura_data['Evangelio'] = remove_verse_annotations(gospel['text'].replace("\r\n", "\n")) if gospel else "No disponible"
 
     return lectura_data
 
