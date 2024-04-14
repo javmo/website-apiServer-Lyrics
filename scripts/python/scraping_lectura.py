@@ -1,28 +1,37 @@
 import requests
-from bs4 import BeautifulSoup
 import json
+from datetime import datetime
 
-def parse_lectura_from(url):
+def parse_lectura_from(date):
+    url = f'https://publication.evangelizo.ws/SP/days/{date}?from=gospelComponent'
     response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    
-    # Extraer las distintas lecturas basadas en la estructura del HTML
-    secciones = soup.find_all('section')
-    lectura_data = {}
+    data = response.json()
 
-    # Asumiendo que la primera sección es la primera lectura, la segunda el salmo, etc.
-    lectura_data['Primera lectura'] = secciones[0].find('div', class_='texto_palabra').get_text(separator='\n', strip=True) if secciones else "No disponible"
-    lectura_data['Salmo'] = secciones[1].find('div', class_='texto_palabra').get_text(separator='\n', strip=True) if len(secciones) > 1 else "No disponible"
-    lectura_data['Segunda lectura'] = secciones[2].find('div', class_='texto_palabra').get_text(separator='\n', strip=True) if len(secciones) > 2 else "No disponible"
-    lectura_data['Evangelio'] = secciones[3].find('div', class_='texto_palabra').get_text(separator='\n', strip=True) if len(secciones) > 3 else "No disponible"
+    lectura_data = {}
+    
+    # Ordenar lecturas por su tipo para asegurar que correspondan con la estructura antigua
+    readings = {reading['type']: reading for reading in data['data']['readings']}
+
+    # Extraer la primera lectura
+    first_reading = readings.get('reading')
+    lectura_data['Primera lectura'] = first_reading['text'].replace("\r\n", "\n") if first_reading else "No disponible"
+    
+    # Extraer el salmo
+    psalm = readings.get('psalm')
+    lectura_data['Salmo'] = psalm['text'].replace("\r\n", "\n") if psalm else "No disponible"
+    
+    # Extraer la segunda lectura
+    # En algunos días como domingos y festividades puede haber una segunda lectura
+    second_reading = readings.get('second_reading')  # Asegúrate de conocer la clave correcta si es diferente
+    lectura_data['Segunda lectura'] = second_reading['text'].replace("\r\n", "\n") if second_reading else "No disponible"
+    
+    # Extraer el evangelio
+    gospel = readings.get('gospel')
+    lectura_data['Evangelio'] = gospel['text'].replace("\r\n", "\n") if gospel else "No disponible"
 
     return lectura_data
 
 if __name__ == "__main__":
-    url = 'https://www.ciudadredonda.org/calendario-lecturas/evangelio-del-dia/hoy'
-    lectura_data = parse_lectura_from(url)
-    # Al final de tu script de Python
-    print(json.dumps(lectura_data))
-
-
-
+    today_date = datetime.now().strftime('%Y-%m-%d')
+    lectura_data = parse_lectura_from(today_date)
+    print(json.dumps(lectura_data, ensure_ascii=False))
