@@ -10,7 +10,10 @@ const RecomendationDetailSchema = new Schema({
 const RecomendationSchema = new Schema({
     lectura: { type: String, required: true }, // 'Primera lectura', 'Salmo', etc.
     detalles: [RecomendationDetailSchema], // Un array de recomendaciones
-    created_at: { type: Date, default: Date.now }
-});
+    created_at: { type: Date, default: Date.now } // El campo de la fecha de creación
+}, { timestamps: { createdAt: 'created_at' } }); // Configura Mongoose para usar este campo como timestamp de creación
+
+// Agregar índice para mejorar la eficiencia en consultas basadas en la fecha
+RecomendationSchema.index({ created_at: 1 });
 
 module.exports = model('Recomendation', RecomendationSchema);

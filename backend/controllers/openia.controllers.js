@@ -17,13 +17,13 @@ const createRecomendation = async (req, res) => {
 
         try {
             const resJson = JSON.parse(result[0]);
-            // Borrar todas las recomendaciones existentes
-            await Recomendation.deleteMany({});
 
-            // Guardar las nuevas recomendaciones
+            // Guardar las nuevas recomendaciones con la fecha actual
+            const fechaActual = new Date();
             const promises = Object.entries(resJson).map(([lectura, recomendaciones]) => {
                 if (recomendaciones.length > 0) {
                     const newRecomendation = new Recomendation({
+                        fecha: fechaActual,
                         lectura,
                         detalles: recomendaciones
                     });
@@ -41,19 +41,26 @@ const createRecomendation = async (req, res) => {
         }
     });
 };
-// Función para obtener las recomendaciones
+
+// Función para obtener la recomendación más reciente
 const getRecomendations = async (req, res) => {
     try {
-        // Buscar todas las recomendaciones en la base de datos
-        const recomendations = await Recomendation.find().populate('lyric'); // Asume que quieres poblar el campo 'lyric' para obtener detalles relacionados, ajusta según sea necesario
+        // Buscar la recomendación más reciente en la base de datos
+        const latestRecomendation = await Recomendation.findOne().sort('-created_at').populate('lyric'); // Asume que quieres poblar el campo 'lyric' para obtener detalles relacionados, ajusta según sea necesario
 
-        // Devolver las recomendaciones como respuesta
-        res.json(recomendations);
+        // Si no se encuentra una recomendación, devolver un mensaje adecuado
+        if (!latestRecomendation) {
+            return res.status(404).json({ message: 'No se encontraron recomendaciones' });
+        }
+
+        // Devolver la recomendación más reciente como respuesta
+        res.json(latestRecomendation);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Error al obtener las recomendaciones' });
+        res.status(500).json({ error: 'Error al obtener la recomendación más reciente' });
     }
 };
+
 
 module.exports = {
     createRecomendation,
