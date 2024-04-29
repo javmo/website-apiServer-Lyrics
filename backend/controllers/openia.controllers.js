@@ -5,8 +5,8 @@ const createRecomendation = async (req, res) => {
     let options = {
         mode: 'text',
         pythonOptions: ['-u'], // get print results in real-time
-        scriptPath: './scripts/python/', // Ajusta según la ubicación de tu script
-        args: [req.body.url] // Asegúrate de enviar 'url' correctamente desde el cliente
+        scriptPath: './scripts/python/',
+        args: [req.body.url]
     };
 
     PythonShell.run('stopwords_canciones.py', options, async (err, result) => {
@@ -17,22 +17,26 @@ const createRecomendation = async (req, res) => {
 
         try {
             const resJson = JSON.parse(result[0]);
+            const lecturas = Object.entries(resJson).map(([tipo_lectura, recomendaciones]) => ({
+                tipo_lectura,
+                detalles: recomendaciones.map(rec => {
+                    if (!rec.id_cancion) { // Cambio aquí: de rec.id a rec.id_cancion
+                        return null; // o manejar de otra manera si es crítico
+                    }
+                    return {
+                        id_cancion: rec.id_cancion, // Cambio aquí: de rec.id a rec.id_cancion
+                        similitud: rec.similitud
+                    };
+                }).filter(rec => rec !== null)
+            }));
 
-            // Guardar las nuevas recomendaciones con la fecha actual
-            const fechaActual = new Date();
-            const promises = Object.entries(resJson).map(([lectura, recomendaciones]) => {
-                if (recomendaciones.length > 0) {
-                    const newRecomendation = new Recomendation({
-                        fecha: fechaActual,
-                        lectura,
-                        detalles: recomendaciones
-                    });
-                    return newRecomendation.save();
-                }
+            const newRecomendation = new Recomendation({
+                lecturas,
+                created_at: new Date() // Guardar la fecha de creación
             });
 
-            // Espera a que todas las promesas se resuelvan
-            await Promise.all(promises);
+            // Guardar la nueva recomendación
+            await newRecomendation.save();
 
             res.json({ message: 'Recomendaciones creadas exitosamente' });
         } catch (error) {
@@ -41,6 +45,8 @@ const createRecomendation = async (req, res) => {
         }
     });
 };
+
+
 
 // Función para obtener la recomendación más reciente
 const getRecomendations = async (req, res) => {
