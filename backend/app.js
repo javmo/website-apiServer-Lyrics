@@ -39,5 +39,7 @@ app.use('/api/chords', require('./routes/chords.routes'));
 
 // static files
 app.use(express.static(path.join(__dirname, 'public')));
+// Configura el directorio de las imágenes
+app.use('/images/chords', express.static(path.join(__dirname, '../../images/chords')));
 
 module.exports = app;

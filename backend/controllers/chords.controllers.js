@@ -1,4 +1,5 @@
 const Chord = require('../models/chord'); // Asegúrate de que el modelo se llama 'Chord'
+const path = require('path');
 
 // Controlador para obtener todos los acordes
 exports.getAllChords = async (req, res) => {
@@ -33,4 +34,19 @@ exports.searchChordsByTitle = async (req, res) => {
     } catch (error) {
         res.status(500).send('Error en el servidor');
     }
+};
+
+// Controlador para obtener la imagen de un acorde por su nombre
+exports.getChordImage = (req, res) => {
+    const chordName = req.params.chord;
+    const imagePath = path.join(__dirname, '../images/chords', `${chordName}.jpg`);
+
+    console.log(`Buscando imagen en: ${imagePath}`);
+
+    res.sendFile(imagePath, (err) => {
+        if (err) {
+            console.error(`Error al enviar la imagen: ${err}`);
+            res.status(404).json({ message: `No se encontró la imagen para el acorde: ${chordName}` });
+        }
+    });
 };
