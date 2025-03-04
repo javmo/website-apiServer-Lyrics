@@ -35,7 +35,8 @@ app.use('/api/openia', require('./routes/openia.routes'));
 app.use('/api/webConfigScrapper', require('./routes/webconfigscrapper.routes'));
 app.use('/api/scaner', require('./routes/scaner.routes'));
 app.use('/api/chords', require('./routes/chords.routes'));
-
+app.use('/api/reflexion', require('./routes/reflexion.routes'));
+app.use('/api/cancion', require('./routes/cancion.routes'));
 
 // static files
 app.use(express.static(path.join(__dirname, 'public')));

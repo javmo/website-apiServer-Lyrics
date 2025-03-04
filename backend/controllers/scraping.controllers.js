@@ -134,10 +134,11 @@ const scrapingSantos = async (req, res) => {
 
         // Unir la salida del script en un solo string y limpiarlo
         const resultString = result.join('').trim();
+        const decodedResult = Buffer.from(resultString, 'utf-8').toString();
 
         try {
             // Parsear el resultado a JSON
-            const resJson = JSON.parse(resultString);
+            const resJson = JSON.parse(decodedResult);
 
             // Asegurarse de que la respuesta se devuelve en UTF-8
             res.setHeader('Content-Type', 'application/json; charset=utf-8');

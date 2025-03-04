@@ -13,11 +13,13 @@ def obtener_santos_del_dia(fecha):
 
     url = f"https://www.vaticannews.va/es/santos/{mes}/{dia}.html"
     response = requests.get(url)
+    response.encoding = 'utf-8'
 
     if response.status_code != 200:
         return {"error": "No se pudo acceder a la página para obtener los santos."}
 
-    soup = BeautifulSoup(response.text, 'html.parser')
+    soup = BeautifulSoup(response.text, 'html.parser', from_encoding='utf-8')
+
 
     # Obtener la fecha desde la página
     fecha_element = soup.find("span", id="dataFilter-text")

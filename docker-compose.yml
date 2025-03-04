@@ -7,11 +7,11 @@ services:
     container_name: nodejs
     restart: unless-stopped
     environment:
-      - API_URI=localhost:3000
+      - API_URI=localhost:4000
       - MONGODB_URI=mongodb://javmo:javmo@db:27017/lyricdb?authSource=admin
 
     ports:
-      - "3000:3000"
+      - "4000:4000"
     command: npm run start
     depends_on:
       - db
