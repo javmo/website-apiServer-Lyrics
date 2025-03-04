@@ -11,6 +11,19 @@ const getReflexiones = async (req, res) => {
     }
 };
 
+// Obtener una reflexión por ID
+const getReflexionById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const reflexion = await Reflexion.findById(id);
+        if (!reflexion) return res.status(404).json({ message: "Reflexión no encontrada" });
+
+        res.json(reflexion);
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener la reflexión", error });
+    }
+};
+
 // Crear una nueva reflexión
 const createReflexion = async (req, res) => {
     try {
@@ -29,7 +42,7 @@ const likeReflexion = async (req, res) => {
         const { id } = req.params;
         const reflexion = await Reflexion.findById(id);
         if (!reflexion) return res.status(404).json({ message: "Reflexión no encontrada" });
-        
+
         reflexion.likes += 1;
         await reflexion.save();
         res.json({ message: "Like agregado" });
@@ -44,7 +57,7 @@ const inspirarReflexion = async (req, res) => {
         const { id } = req.params;
         const reflexion = await Reflexion.findById(id);
         if (!reflexion) return res.status(404).json({ message: "Reflexión no encontrada" });
-        
+
         reflexion.inspirador += 1;
         await reflexion.save();
         res.json({ message: "Marcado como inspirador" });
@@ -66,6 +79,7 @@ const deleteReflexion = async (req, res) => {
 
 module.exports = {
     getReflexiones,
+    getReflexionById,
     createReflexion,
     likeReflexion,
     inspirarReflexion,

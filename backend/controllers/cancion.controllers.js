@@ -11,6 +11,19 @@ const getCanciones = async (req, res) => {
     }
 };
 
+// Obtener una canción por su ID
+const getCancionById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const cancion = await Cancion.findById(id);
+        if (!cancion) return res.status(404).json({ message: "Canción no encontrada" });
+
+        res.json(cancion);
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener la canción", error });
+    }
+};
+
 // Crear una nueva canción recomendada
 const createCancion = async (req, res) => {
     try {
@@ -36,6 +49,7 @@ const deleteCancion = async (req, res) => {
 
 module.exports = {
     getCanciones,
+    getCancionById,
     createCancion,
     deleteCancion
 };
