@@ -1,12 +1,14 @@
-# Usa una imagen ligera de Python como base
+# Usar una imagen base oficial de Python
 FROM python:3.9-slim
 
-# Instala dependencias del sistema necesarias
+# Instalar dependencias del sistema necesarias
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
     unzip \
     gnupg \
+    nodejs \
+    npm \
     libglib2.0-0 \
     libnss3 \
     libgconf-2-4 \
@@ -27,31 +29,30 @@ RUN apt-get update && apt-get install -y \
     libcups2 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Agrega repositorio de Google para Chrome
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update && apt-get install -y google-chrome-stable
+# Instalar Google Chrome estable
+RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get update && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    rm google-chrome-stable_current_amd64.deb
 
-# Establece variables de entorno para Chrome y ChromeDriver
+# Establecer variable de entorno para Chrome
 ENV GOOGLE_CHROME_BIN="/usr/bin/google-chrome"
-ENV CHROMEDRIVER_VERSION="latest"
 
-# Instala ChromeDriver compatible con la versión instalada de Chrome
-RUN wget -q -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")/chromedriver_linux64.zip \
-    && unzip /tmp/chromedriver.zip -d /usr/local/bin/ \
-    && rm /tmp/chromedriver.zip
+# Agregar ChromeDriver al PATH (se descargará automáticamente en tiempo de ejecución)
+RUN pip install --no-cache-dir chromedriver-autoinstaller
 
-# Establecer el PATH para que Chrome y ChromeDriver sean accesibles
-ENV PATH="/usr/local/bin:${PATH}"
-
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copia y instala dependencias de Python
+# Instalar dependencias de Python
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia el código fuente de la aplicación al contenedor
+# Copiar el código fuente de la aplicación al contenedor
 COPY . .
 
-# Ejecutar la API
-CMD ["python", "scripts/python/scraping_lectura_va.py"]
+# Instalar dependencias de Node.js y construir la aplicación
+RUN npm install && npm run build
+
+# Definir el comando para ejecutar la API Node.js
+CMD ["npm", "run", "start"]

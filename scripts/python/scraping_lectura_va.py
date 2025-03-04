@@ -1,9 +1,9 @@
 import os
 import sys
+import chromedriver_autoinstaller  # 📌 Importar el autoinstalador de ChromeDriver
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -11,8 +11,11 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import json
 
+# Asegurar que ChromeDriver se instala correctamente en cada ejecución
+chromedriver_autoinstaller.install()
+
 # Asegurarnos de que Python maneje la codificación en UTF-8
-sys.stdout.reconfigure(encoding='utf-8')  # Esto asegura que la salida sea en UTF-8
+sys.stdout.reconfigure(encoding='utf-8')
 
 def get_lecturas_vaticano(fecha=None):
     """
@@ -28,13 +31,12 @@ def get_lecturas_vaticano(fecha=None):
     chrome_options.add_argument("--headless")  
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-logging")  
     chrome_options.add_argument("--disable-dev-shm-usage")  
     chrome_options.add_argument("--remote-debugging-port=0")  
     chrome_options.add_experimental_option("excludeSwitches", ["enable-logging", "enable-automation"])
     chrome_options.add_argument("--log-level=3")  
 
-    service = Service(ChromeDriverManager().install(), log_output=os.devnull)
+    service = Service()  # Ahora ChromeDriver se detecta automáticamente
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     driver.get(url)
@@ -52,14 +54,7 @@ def get_lecturas_vaticano(fecha=None):
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "content")))
 
         page_source = driver.page_source
-
-        # Convertir a UTF-8 para evitar caracteres malformados
         soup = BeautifulSoup(page_source, "html.parser")
-        soup_text = soup.prettify()  # Convertir a string
-        #print(soup_text)  # Imprime el contenido para depurar y verificar si los caracteres son correctos
-
-        # No es necesario hacer encode y decode, porque BeautifulSoup ya maneja la codificación correctamente
-        soup = BeautifulSoup(soup_text, "html.parser")  # Volver a parsear con UTF-8
 
         # Extraer lecturas
         secciones = soup.find_all("section", class_="section--isStatic")
