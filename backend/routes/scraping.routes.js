@@ -3,11 +3,12 @@ const  router = Router();
 
 
 
-const { scrapingWithUrl, createScrapSong, scrapingLectura, scrapingLecturaVa, scrapingSantos, obtenerFiestasDelMes  } = require('../controllers/scraping.controllers')
+const { scrapingWithUrl, createScrapSong, scrapingLectura, scrapingLecturaVa, scrapingSantos, obtenerFiestasDelMes, getLecturaPorFecha  } = require('../controllers/scraping.controllers')
 
 router.get('/search', scrapingWithUrl);
 router.get('/lectura', scrapingLectura);
-router.get('/lectura-va', scrapingLecturaVa);
+router.get('/lectura-va', getLecturaPorFecha);
+router.post('/lectura-va', scrapingLecturaVa);
 router.get('/santos', scrapingSantos);
 router.get('/fiestas', obtenerFiestasDelMes)
 router.post('/', createScrapSong);

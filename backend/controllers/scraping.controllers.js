@@ -2,6 +2,7 @@
 const {PythonShell} =require('python-shell');
 const axios = require('axios');
 const he = require('he');
+const Lectura = require("../models/Lectura");
 
 const scrapingWithUrl = async (req, res) => {
     const url = req.query.url;
@@ -73,42 +74,89 @@ const createScrapSong = async (req, res) => {
 
 };
 
+
 const scrapingLecturaVa = async (req, res) => {
-    const { fecha } = req.query; // Recibe la fecha desde la query string (YYYY-MM-DD)
+    const { fecha } = req.body; // Recibe la fecha desde el body en formato YYYY-MM-DD
 
     if (!fecha) {
         return res.status(400).json({ error: "La fecha es requerida en formato YYYY-MM-DD" });
     }
 
-    let options = {
-        mode: 'text',
-        pythonOptions: ['-u'], // Para capturar la salida en tiempo real
-        scriptPath: './scripts/python/',
-        args: [fecha] // Pasamos la fecha como argumento al script de Python
-    };
-
-    PythonShell.run('scraping_lectura_va.py', options, function (err, result) {
-        if (err) {
-            console.error("Error en Python:", err);
-            return res.status(500).send('Error al ejecutar el script de Python');
+    try {
+        // Verificar si la lectura ya está en la base de datos
+        const lecturaExistente = await Lectura.findOne({ fecha });
+        if (lecturaExistente) {
+            return res.status(409).json({ error: "La lectura ya existe en la base de datos." });
         }
 
-        // Unir la salida del script en un solo string y limpiarlo
-        const resultString = result.join('').trim();
-       // console.log('Resultado del script de Python:', resultString);  // Verificar la salida cruda
+        // Opciones para ejecutar el script de Python
+        let options = {
+            mode: "text",
+            pythonOptions: ["-u"], // Para capturar salida en tiempo real
+            scriptPath: "./scripts/python/",
+            args: [fecha], // Pasamos la fecha como argumento al script
+        };
 
-        try {
-            const resJson = JSON.parse(resultString);
-           // console.log('Resultado JSON:', resJson);  // Verificar el resultado JSON
+        // Ejecutar el script de Python
+        PythonShell.run("scraping_lectura_va.py", options, async function (err, result) {
+            if (err) {
+                console.error("❌ Error en Python:", err);
+                return res.status(500).json({ error: "Error al ejecutar el script de Python" });
+            }
 
-            // Asegurarse de que la respuesta se devuelve en UTF-8
-            res.setHeader('Content-Type', 'application/json; charset=utf-8');
-            res.json(resJson);
-        } catch (error) {
-            console.error('Error al parsear JSON:', error, '\nSalida:', resultString);
-            return res.status(500).json({ error: 'Error al procesar los resultados del script de Python', details: error.message });
+            try {
+                // Procesar el resultado del script
+                const resultString = result.join("").trim();
+                const resJson = JSON.parse(resultString);
+
+                // Crear el objeto para MongoDB
+                const nuevaLectura = new Lectura({
+                    fecha,
+                    primeraLectura: resJson["Primera lectura"] || "No disponible",
+                    segundaLectura: resJson["Segunda lectura"] || "No disponible",
+                    evangelio: resJson["Evangelio"] || "No disponible",
+                    angelus: resJson["Ángelus"] || "No disponible",
+                });
+
+                // Guardar en MongoDB
+                await nuevaLectura.save();
+                console.log(`✅ Lectura para ${fecha} guardada en MongoDB`);
+
+                res.status(201).json(nuevaLectura);
+            } catch (error) {
+                console.error("❌ Error al parsear JSON:", error);
+                return res.status(500).json({ error: "Error al procesar los resultados del script de Python" });
+            }
+        });
+    } catch (error) {
+        console.error("❌ Error en el servidor:", error);
+        return res.status(500).json({ error: "Error interno del servidor" });
+    }
+};
+
+
+
+const getLecturaPorFecha = async (req, res) => {
+    const { fecha } = req.query; // Recibe la fecha desde query params (YYYY-MM-DD)
+
+    if (!fecha) {
+        return res.status(400).json({ error: "La fecha es requerida en formato YYYY-MM-DD" });
+    }
+
+    try {
+        // Buscar la lectura en la base de datos
+        const lectura = await Lectura.findOne({ fecha });
+
+        if (!lectura) {
+            return res.status(404).json({ error: `No se encontró la lectura para la fecha ${fecha}` });
         }
-    });
+
+        console.log(`📖 Lectura para ${fecha} recuperada de MongoDB`);
+        res.status(200).json(lectura);
+    } catch (error) {
+        console.error("❌ Error al consultar la lectura en MongoDB:", error);
+        res.status(500).json({ error: "Error interno del servidor", details: error.message });
+    }
 };
 
 const scrapingSantos = async (req, res) => {
@@ -213,5 +261,6 @@ module.exports = {
     scrapingLectura,
     scrapingLecturaVa,
     scrapingSantos,
-    obtenerFiestasDelMes
+    obtenerFiestasDelMes,
+    getLecturaPorFecha
 }
