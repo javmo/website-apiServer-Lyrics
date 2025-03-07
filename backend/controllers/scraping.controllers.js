@@ -3,6 +3,7 @@ const {PythonShell} =require('python-shell');
 const axios = require('axios');
 const he = require('he');
 const Lectura = require("../models/Lectura");
+const Reflexion = require("../models/Reflexion");
 
 const scrapingWithUrl = async (req, res) => {
     const url = req.query.url;
@@ -253,6 +254,66 @@ const obtenerFiestasDelMes = async (req, res) => {
     }
 };
 
+const scrapingReflexionArqMadrid = async (req, res) => {
+    const { fecha } = req.body; // Recibe la fecha desde el body en formato YYYY-MM-DD
+
+    if (!fecha) {
+        return res.status(400).json({ error: "La fecha es requerida en formato YYYY-MM-DD" });
+    }
+
+    try {
+        // Verificar si la reflexión ya está en la base de datos por fecha y autor
+        const reflexionExistente = await Reflexion.findOne({ fecha, nombre: "Archidiócesis de Madrid" });
+        if (reflexionExistente) {
+            return res.status(409).json({ error: "La reflexión ya existe en la base de datos para esta fecha y autor." });
+        }
+
+        // Opciones para ejecutar el script de Python
+        let options = {
+            mode: "text",
+            pythonOptions: ["-u"], // Para capturar salida en tiempo real
+            scriptPath: "./scripts/python/", // Directorio donde está el script
+            args: [fecha.replace(/-/g, "/")] // Cambia YYYY-MM-DD a YYYY/MM/DD para Python
+        };
+
+        // Ejecutar el script de Python
+        PythonShell.run("reflexionArqMadrid.py", options, async function (err, result) {
+            if (err) {
+                console.error("❌ Error en Python:", err);
+                return res.status(500).json({ error: "Error al ejecutar el script de Python" });
+            }
+
+            try {
+                // Convertir la salida del script a JSON
+                const resultString = result.join("").trim();
+                const resJson = JSON.parse(resultString);
+
+                if (resJson.error) {
+                    return res.status(400).json(resJson); // Si hay error en el script, devolverlo
+                }
+
+                // Crear el objeto para MongoDB con el autor fijo
+                const nuevaReflexion = new Reflexion({
+                    fecha,
+                    nombre: "Archidiócesis de Madrid",
+                    comentario: resJson.comentario
+                });
+
+                // Guardar en MongoDB
+                await nuevaReflexion.save();
+                console.log(`✅ Reflexión para ${fecha} guardada en MongoDB`);
+
+                res.status(201).json(nuevaReflexion);
+            } catch (error) {
+                console.error("❌ Error al parsear JSON:", error);
+                return res.status(500).json({ error: "Error al procesar los resultados del script de Python" });
+            }
+        });
+    } catch (error) {
+        console.error("❌ Error en el servidor:", error);
+        return res.status(500).json({ error: "Error interno del servidor" });
+    }
+};
 
 
 module.exports = {
@@ -262,5 +323,6 @@ module.exports = {
     scrapingLecturaVa,
     scrapingSantos,
     obtenerFiestasDelMes,
-    getLecturaPorFecha
+    getLecturaPorFecha,
+    scrapingReflexionArqMadrid
 }
